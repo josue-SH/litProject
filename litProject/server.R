@@ -13,14 +13,6 @@ server <- function(input, output) {
     # Convert PDF to PNG
     png_files <- pdftools::pdf_convert(pdf_file_path, dpi = 600)
     
-    # Create directory for images if not exists
-    if (!dir.exists("images")) {
-      dir.create("images")
-    }
-    
-    # Move PNG files to images directory
-    file.copy(from = png_files, to = "./images", overwrite = TRUE)
-    
     # Process PNG files using Magick package
     input_images <- lapply(png_files, magick::image_read)
     
@@ -48,7 +40,11 @@ server <- function(input, output) {
     }
     
     converted_text(readLines(paste0("./texts/text_", 1:length(input_images), ".txt")))
-  })
+    
+    file.remove(png_files)
+    file.remove(list.files("./texts"))
+  
+    })
   
   output$download_txt <- downloadHandler(
     filename = function() {
