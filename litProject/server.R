@@ -32,8 +32,6 @@ server <- function(input, output) {
         tesseract::ocr(engine = eng)
     }
     
-    print(getwd())
-    
     # Loop through image directory
     for (j in seq_along(magick_images)) {
       file_conn <- file(paste0("text_", j, ".txt"))
@@ -41,16 +39,12 @@ server <- function(input, output) {
       close(file_conn)
     }
     
-    
-  
-    
-    
-    
     # Enable download button
     shinyjs::enable("download_txt")
     
     })
   
+  # Create and download zip file of only txt files
   output$download_txt <- downloadHandler(
     filename = "converted_txt.zip",
     content = function(file) {
@@ -61,7 +55,7 @@ server <- function(input, output) {
     contentType = "application/zip"
   )
   
-  # Disable the download button intially
+  # Disable the download button initially
   shinyjs::disable("download_txt")
   
 }
