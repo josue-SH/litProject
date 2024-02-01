@@ -6,7 +6,6 @@ library(zip)
 
 # Define server
 server <- function(input, output) {
-  #converted_text <- reactiveVal(NULL)
   
   observeEvent(input$convert_btn, {
     req(input$pdf_file)
@@ -33,30 +32,21 @@ server <- function(input, output) {
         tesseract::ocr(engine = eng)
     }
     
-    # Create directory for TXT files if not exists
-    if (!dir.exists("texts")) {
-      dir.create("texts")
-    }
+    print(getwd())
     
     # Loop through image directory
     for (j in seq_along(magick_images)) {
-      file_conn <- file(shiny_dir, paste0("text_", j, ".txt"))
+      file_conn <- file(paste0("text_", j, ".txt"))
       writeLines(generate_txt(magick_images[[j]]), file_conn)
       close(file_conn)
     }
     
     
     text_zip <- zip::zip(zipfile = "textFiles.zip", 
-                         list.files(shiny_dir, full.names = TRUE))
+                         list.files(shiny_dir, full.names = TRUE),
+                         mode = "cherry-pick")
     
-    #converted_text(readLines(paste0("./texts/text_", 1:length(magick_images), ".txt")))
-    
-    #file.remove(png_files)
-    #file.remove(list.files("./texts"))
   
-    output$zip_file <- renderText({
-      text_zip
-    })
     
     
     
@@ -66,12 +56,11 @@ server <- function(input, output) {
     })
   
   output$download_txt <- downloadHandler(
-    filename = function() {
-      "converted_txt.zip"
-    },
+    filename = "converted_txt.zip",
     content = function(file) {
-      file.copy(output$zip_file, file)
-    }
+      file.copy(text_zip, file)
+    },
+    contentType = "application/zip"
   )
   
   # Disable the download button intially
