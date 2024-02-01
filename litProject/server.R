@@ -42,10 +42,6 @@ server <- function(input, output) {
     }
     
     
-    text_zip <- zip::zip(zipfile = "textFiles.zip", 
-                         list.files(shiny_dir, full.names = TRUE),
-                         mode = "cherry-pick")
-    
   
     
     
@@ -58,7 +54,9 @@ server <- function(input, output) {
   output$download_txt <- downloadHandler(
     filename = "converted_txt.zip",
     content = function(file) {
-      file.copy(text_zip, file)
+      zip::zip(file, 
+               list.files(pattern = "text_",full.names = TRUE),
+               mode = "cherry-pick")
     },
     contentType = "application/zip"
   )
