@@ -41,8 +41,8 @@ server <- function(input, output) {
     
     converted_text(readLines(paste0("./texts/text_", 1:length(input_images), ".txt")))
     
-    file.remove(png_files)
-    file.remove(list.files("./texts"))
+    #file.remove(png_files)
+    #file.remove(list.files("./texts"))
   
     })
   
@@ -55,11 +55,4 @@ server <- function(input, output) {
     }
   )
   
-  output$status <- renderText({
-    if (!is.null(converted_text())) {
-      "Conversion completed. You can download the TXT file now."
-    } else {
-      ""
-    }
-  })
 }
