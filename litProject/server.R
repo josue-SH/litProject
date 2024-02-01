@@ -13,9 +13,8 @@ server <- function(input, output) {
     pdf_file_path <- input$pdf_file$datapath
     
     # Create a temporary directory
-    temp_dir <- tempdir()
-    dir.create(temp_dir, showWarnings = FALSE)
-    setwd(temp_dir)
+    shiny_dir <- tempdir(check = TRUE)
+    setwd(shiny_dir)
     
     # Convert PDF to PNG
     png_files <- pdftools::pdf_convert(pdf_file_path, dpi = 600)
@@ -41,34 +40,41 @@ server <- function(input, output) {
     
     # Loop through image directory
     for (j in seq_along(magick_images)) {
-      file_conn <- file(paste0("./texts/text_", j, ".txt"))
+      file_conn <- file(shiny_dir, paste0("text_", j, ".txt"))
       writeLines(generate_txt(magick_images[[j]]), file_conn)
       close(file_conn)
     }
     
-    zip_file <- zip::zip(zipfile = "textFiles.zip", 
-                        list.files(temp_dir, full.names = TRUE))
+    
+    text_zip <- zip::zip(zipfile = "textFiles.zip", 
+                         list.files(shiny_dir, full.names = TRUE))
     
     #converted_text(readLines(paste0("./texts/text_", 1:length(magick_images), ".txt")))
     
     #file.remove(png_files)
     #file.remove(list.files("./texts"))
   
-    output$download_txt <- downloadHandler(
-      filename = function() {
-        paste("converted_text", ".zip", sep = "")
-      },
-      content = function(file) {
-        file.copy(zip_file, file)
-      }
-    )
+    output$zip_file <- renderText({
+      text_zip
+    })
+    
+    
     
     # Enable download button
-    shinyjs::enable("download_zip")
+    shinyjs::enable("download_txt")
     
     })
   
+  output$download_txt <- downloadHandler(
+    filename = function() {
+      "converted_txt.zip"
+    },
+    content = function(file) {
+      file.copy(output$zip_file, file)
+    }
+  )
+  
   # Disable the download button intially
-  shinyjs::disable("download_zip")
+  shinyjs::disable("download_txt")
   
 }
