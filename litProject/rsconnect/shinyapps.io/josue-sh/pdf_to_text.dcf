@@ -1,0 +1,13 @@
+name: pdf_to_text
+title: pdf_to_text
+username: josue-sh
+account: josue-sh
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11105127
+bundleId: 8208317
+url: https://josue-sh.shinyapps.io/pdf_to_text/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: 0_1.png|0_2.png|0_3.png|0_4.png|0_5.png|text_1.txt|text_2.txt|text_3.txt|text_4.txt|text_5.txt
