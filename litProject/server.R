@@ -22,14 +22,14 @@ server <- function(input, output) {
     magick_images <- lapply(png_files, magick::image_read)
     
     # Setting up the Tesseract OCR engine
-    spa_old <- tesseract::tesseract("spa_old")
+    eng <- tesseract::tesseract("eng")
     
     # Function for generating TXT files from PNG files
     generate_txt <- function(input){
       input |>
         magick::image_resize("2000x") |>
         magick::image_convert(type = "Grayscale") |>
-        tesseract::ocr(engine = spa_old)
+        tesseract::ocr(engine = eng)
     }
     
     # Loop through images
