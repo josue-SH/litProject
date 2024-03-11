@@ -11,10 +11,6 @@ server <- function(input, output) {
     req(input$pdf_file)
     pdf_file_path <- input$pdf_file$datapath
     
-    # Create a temporary directory
-    #shiny_dir <- tempdir(check = TRUE)
-    #setwd(shiny_dir)
-    
     # Convert PDF to PNG
     png_files <- pdftools::pdf_convert(pdf_file_path, dpi = 600)
     
