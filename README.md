@@ -1,6 +1,6 @@
 # PDFtoTXT Converter
 
-This repository contains the code for a .pdf to .txt file converter app. You can view the published version [here](https://josue-sh.shinyapps.io/pdf_to_text/), although it does not work right now due to the memory contraints of the free version of shiny.io.
+This repository contains the code for a .pdf to .txt file converter app. You can view the published version [here](https://r.amherst.edu/apps/nhorton/litProject/), Special thanks to [Nicholas Horton](https://github.com/nicholasjhorton) for hosting the application.
 
 I created a version of this app for a course I was helping develop as an Academic Intern at Amherst College. I decided to make a more user-friendly version of that project, and developed this shiny app for ease of use. 
 
